@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rio · Jul 20–30 2026</title>
+<style>
+  :root{
+    /* Ocean-to-dusk palette — Atlantic at golden hour, not the AI cream/terracotta default */
+    --abyss:#06232e;        /* deep sea, page base */
+    --tide:#0d3a49;         /* raised surfaces */
+    --tide-2:#12495b;       /* hover surfaces */
+    --foam:#eaf4f2;         /* primary text */
+    --mist:#9db8bd;         /* secondary text */
+    --mist-dim:#6f9198;     /* tertiary text */
+    --sun:#ffb347;          /* golden-hour accent */
+    --sun-deep:#f0932b;     /* accent pressed */
+    --coral:#ff7a6b;        /* alerts / closures */
+    --leaf:#5fc9a6;         /* open / free / good */
+    --line:rgba(234,244,242,.10);
+    --line-strong:rgba(234,244,242,.18);
+    --shadow:0 18px 50px -20px rgba(0,0,0,.7);
+    --r:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(255,179,71,.10), transparent 60%),
+      radial-gradient(900px 500px at 0% 10%, rgba(95,201,166,.08), transparent 55%),
+      var(--abyss);
+    color:var(--foam);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  .u-sans{font-family:"Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif}
+
+  /* ---------- Hero ---------- */
+  header.hero{position:relative;overflow:hidden;padding:74px 0 56px}
+  .hero-sky{position:absolute;inset:0;z-index:0;opacity:.9}
+  /* layered mountain silhouettes — Sugarloaf & Corcovado feel */
+  .ridge{position:absolute;left:0;right:0;bottom:0;width:100%}
+  .eyebrow{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:12.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--sun);font-weight:600;position:relative;z-index:2}
+  h1{position:relative;z-index:2;font-size:clamp(48px,10vw,104px);line-height:.92;font-weight:600;letter-spacing:-.02em;margin:.18em 0 .12em}
+  h1 .em{font-style:italic;color:var(--sun)}
+  .sub{position:relative;z-index:2;max-width:52ch;color:var(--mist);font-size:clamp(16px,2.4vw,19px)}
+  .hero-meta{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .chip{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:13px;letter-spacing:.02em;background:var(--tide);border:1px solid var(--line-strong);padding:8px 13px;border-radius:999px;color:var(--foam);display:inline-flex;gap:7px;align-items:center}
+  .chip b{color:var(--sun);font-weight:600}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--leaf);box-shadow:0 0 0 3px rgba(95,201,166,.18)}
+
+  /* ---------- Closure key ---------- */
+  .key{margin:34px 0 8px;background:linear-gradient(180deg,var(--tide),rgba(13,58,73,.55));border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+  .key h2{font-size:14px;letter-spacing:.06em;text-transform:uppercase;font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;color:var(--mist);font-weight:600;margin-bottom:12px}
+  .key-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .key-card{background:var(--abyss);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .key-card .d{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:3px}
+  .key-card p{font-size:14.5px;color:var(--mist)}
+  .key-card.mon .d{color:var(--coral)}
+  .key-card.tue .d{color:var(--leaf)}
+  .key-card.wed .d{color:var(--sun)}
+
+  /* ---------- Section headers ---------- */
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:52px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--line-strong)}
+  .sec-head h2{font-size:clamp(26px,4vw,34px);font-weight:600;letter-spacing:-.01em}
+  .sec-head span{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:13px;color:var(--mist-dim);letter-spacing:.04em}
+
+  /* ---------- Day timeline ---------- */
+  .days{display:flex;flex-direction:column;gap:16px}
+  .day{position:relative;background:var(--tide);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:border-color .25s,transform .25s}
+  .day:hover{border-color:var(--line-strong)}
+  .day.conf{background:repeating-linear-gradient(135deg,var(--tide),var(--tide) 12px,rgba(13,58,73,.6) 12px,rgba(13,58,73,.6) 24px)}
+  .day-top{display:flex;align-items:center;gap:16px;padding:18px 22px;cursor:pointer;user-select:none}
+  .day-date{flex-shrink:0;text-align:center;min-width:58px}
+  .day-date .dow{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sun);font-weight:600}
+  .day-date .num{font-size:32px;font-weight:600;line-height:1;letter-spacing:-.02em}
+  .day-spine{flex:1;min-width:0}
+  .day-title{font-size:19px;font-weight:600;letter-spacing:-.01em;margin-bottom:3px}
+  .day-hotel{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:12.5px;color:var(--mist-dim);display:flex;align-items:center;gap:6px}
+  .day-hotel .pin{width:5px;height:5px;border-radius:50%;background:var(--mist-dim)}
+  .day-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+  .tag{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:600;padding:4px 9px;border-radius:999px;white-space:nowrap}
+  .tag.mus{background:rgba(255,179,71,.14);color:var(--sun)}
+  .tag.nat{background:rgba(95,201,166,.14);color:var(--leaf)}
+  .tag.cof{background:rgba(234,244,242,.09);color:var(--mist)}
+  .tag.rst{background:rgba(255,122,107,.14);color:var(--coral)}
+  .chev{flex-shrink:0;color:var(--mist-dim);transition:transform .3s;font-size:13px;font-family:sans-serif}
+  .day.open .chev{transform:rotate(90deg)}
+  .day-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .day.open .day-body{max-height:1400px}
+  .day-inner{padding:2px 22px 22px;border-top:1px solid var(--line)}
+  .stops{list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:2px}
+  .stop{display:flex;gap:14px;padding:11px 0;border-bottom:1px dashed var(--line)}
+  .stop:last-child{border-bottom:0}
+  .stop-when{flex-shrink:0;width:96px;font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sun);font-weight:600;padding-top:3px}
+  .stop-main{flex:1;min-width:0}
+  .stop-name{font-size:16.5px;font-weight:600;margin-bottom:2px}
+  .stop-name a{color:var(--foam);text-decoration:none;border-bottom:1px solid rgba(255,179,71,.4);transition:border-color .2s,color .2s}
+  .stop-name a:hover{color:var(--sun);border-color:var(--sun)}
+  .stop-desc{font-size:14.5px;color:var(--mist)}
+  .day-cost{margin-top:15px;font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:13px;color:var(--mist-dim);background:var(--abyss);border-radius:10px;padding:9px 13px;display:inline-block}
+  .day-cost b{color:var(--leaf);font-weight:600}
+
+  /* ---------- Places directory ---------- */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .filt{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:.03em;padding:8px 15px;border-radius:999px;background:var(--tide);border:1px solid var(--line-strong);color:var(--mist);cursor:pointer;transition:all .2s}
+  .filt:hover{color:var(--foam);border-color:var(--sun)}
+  .filt.on{background:var(--sun);color:var(--abyss);border-color:var(--sun)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px}
+  .card{background:var(--tide);border:1px solid var(--line);border-radius:14px;padding:17px 18px;display:flex;flex-direction:column;transition:transform .2s,border-color .2s;position:relative}
+  .card:hover{transform:translateY(-3px);border-color:var(--line-strong)}
+  .card-cat{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+  .card-name{font-size:18px;font-weight:600;letter-spacing:-.01em;line-height:1.2;margin-bottom:7px}
+  .card-note{font-size:14px;color:var(--mist);flex:1;margin-bottom:14px}
+  .card-note .cl{color:var(--coral);font-weight:600}
+  .card-note .op{color:var(--leaf);font-weight:600}
+  .card-go{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--abyss);background:var(--sun);text-decoration:none;text-align:center;padding:9px;border-radius:9px;transition:background .2s}
+  .card-go:hover{background:var(--sun-deep)}
+  /* category color coding on the little label */
+  .cat-Museum{color:var(--sun)} .cat-Nature{color:var(--leaf)} .cat-Coffee{color:#d9b38c}
+  .cat-Food{color:var(--coral)} .cat-Spa{color:#c9a0dc} .cat-Bookstore{color:#8fb7e8} .cat-Event{color:var(--foam)}
+
+  /* ---------- Budget / footer ---------- */
+  .band{margin:56px 0 0;background:linear-gradient(180deg,var(--tide),rgba(13,58,73,.4));border:1px solid var(--line);border-radius:var(--r);padding:26px 24px}
+  .band h2{font-size:22px;font-weight:600;margin-bottom:14px}
+  .band ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 26px}
+  .band li{font-size:15px;color:var(--mist);padding-left:18px;position:relative}
+  .band li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--sun)}
+  .band li b{color:var(--foam);font-weight:600}
+  @media (max-width:640px){.band ul{grid-template-columns:1fr}}
+
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+  .btn{font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:14px;font-weight:600;letter-spacing:.02em;padding:12px 20px;border-radius:11px;text-decoration:none;cursor:pointer;border:1px solid var(--line-strong);transition:all .2s;display:inline-flex;align-items:center;gap:8px;background:none;color:var(--foam)}
+  .btn:hover{border-color:var(--sun);color:var(--sun)}
+  .btn.primary{background:var(--sun);color:var(--abyss);border-color:var(--sun)}
+  .btn.primary:hover{background:var(--sun-deep);color:var(--abyss)}
+
+  footer{padding:44px 0 60px;text-align:center;color:var(--mist-dim);font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:13px}
+  footer .verify{max-width:60ch;margin:0 auto 16px;color:var(--mist)}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(120px);background:var(--foam);color:var(--abyss);font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;font-size:14px;font-weight:600;padding:12px 20px;border-radius:999px;box-shadow:var(--shadow);transition:transform .35s cubic-bezier(.2,.9,.3,1.2);z-index:99}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:640px){
+    .key-grid{grid-template-columns:1fr}
+    .day-top{flex-wrap:wrap}
+    .day-tags{width:100%;justify-content:flex-start;order:3}
+    .stop{flex-direction:column;gap:2px}
+    .stop-when{width:auto}
+  }
+  :focus-visible{outline:2px solid var(--sun);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <svg class="hero-sky ridge" viewBox="0 0 1440 320" preserveAspectRatio="none" aria-hidden="true" style="height:320px">
+    <path d="M0,320 L0,210 C120,180 220,120 340,140 C420,154 470,90 560,120 C610,137 640,60 720,96 C560,60 L1440,320 Z" fill="rgba(18,73,91,.5)"/>
+    <path d="M0,320 L0,250 C160,235 260,180 400,205 C520,226 560,150 700,185 C820,214 900,160 1040,195 C1180,230 1300,205 1440,235 L1440,320 Z" fill="rgba(13,58,73,.85)"/>
+    <path d="M0,320 L0,285 C200,275 380,250 560,268 C760,288 900,255 1080,272 C1240,287 1360,278 1440,285 L1440,320 Z" fill="var(--tide)"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow">Rio de Janeiro · Winter</div>
+    <h1>Ten days,<br><span class="em">Cidade Maravilhosa</span></h1>
+    <p class="sub">A shareable plan for July 20–30, 2026 — museums, coffee, rainforest lookouts, and long dinners, timed around what's actually open each day.</p>
+    <div class="hero-meta">
+      <span class="chip"><span class="dot"></span> <b>7</b>&nbsp;free days</span>
+      <span class="chip"><b>26</b>&nbsp;places mapped</span>
+      <span class="chip">Budget&nbsp;<b>~$50</b>/day</span>
+      <span class="chip">No car needed</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Closure key -->
+  <section class="key" aria-label="Closure cheat sheet">
+    <h2>The one rule that shapes everything</h2>
+    <div class="key-grid">
+      <div class="key-card mon"><div class="d">Mondays</div><p>Parks &amp; lookouts closed. Do coffee, bookstores &amp; Centro instead.</p></div>
+      <div class="key-card tue"><div class="d">Tuesdays</div><p>Museu do Amanhã &amp; MAR are free — but CCBB is closed.</p></div>
+      <div class="key-card wed"><div class="d">Wednesdays</div><p>Those two museums close. Make it a nature day.</p></div>
+    </div>
+  </section>
+
+  <!-- Itinerary -->
+  <div class="sec-head"><h2>The itinerary</h2><span>tap any day to expand</span></div>
+  <div class="days" id="days"></div>
+
+  <!-- Places directory -->
+  <div class="sec-head"><h2>Every place</h2><span>filter &amp; open in Maps</span></div>
+  <div class="filters" id="filters"></div>
+  <div class="grid" id="grid"></div>
+
+  <!-- Budget -->
+  <section class="band">
+    <h2>Keeping it near $50 a day</h2>
+    <ul>
+      <li>Restaurant mains run <b>R$45–90</b>; one nice dinner + lighter days stays on budget.</li>
+      <li>Museums are <b>R$0–30</b>; all the nature is <b>free</b> — your budget cushions.</li>
+      <li>Massages run <b>R$150–250</b>; packages can push past the daily cap.</li>
+      <li>Rodízio steakhouses are worth it but a <b>splurge</b> — plan around one.</li>
+      <li><b>Uber</b> is cheap and covers every stop here; skip the rental car.</li>
+      <li>Prices are rough <b>Jul 2026</b> estimates — confirm when booking.</li>
+    </ul>
+    <div class="cta-row">
+      <button class="btn primary" id="shareBtn">Copy share link</button>
+      <a class="btn" id="mapAllBtn" href="#" target="_blank" rel="noopener">Open full map in Google Maps</a>
+    </div>
+  </section>
+
+  <footer>
+    <p class="verify">One thing to verify closer to your trip: the exact <b>Festival de Inverno</b> lineup and dates at Marina da Glória — it's your best shot at a live cultural night, and the schedule wasn't published yet.</p>
+    <p>Made for the Rio crew · July 2026 · times &amp; prices subject to change</p>
+  </footer>
+</main>
+
+<div class="toast" id="toast">Link copied — send it to the crew</div>
+
+<script>
+/* ---------- Data ---------- */
+const PLACES = [
+  {name:"Museu do Amanhã",cat:"Museum",note:"Calatrava architecture on the waterfront. ~R$30/R$15 half. |Free Tue| · |Closed Wed|",lat:-22.8940177,lng:-43.1794418},
+  {name:"MAR – Rio Museum of Art",cat:"Museum",note:"Excellent Brazilian art, next to Museu do Amanhã. |Free Tue| · |Closed Wed|",lat:-22.8966558,lng:-43.1819565},
+  {name:"CCBB",cat:"Museum",note:"Free. Gorgeous historic bank, rotating shows. |Closed Tue| · use the staffed ticket booth.",lat:-22.9010588,lng:-43.1765213},
+  {name:"MAM – Museum of Modern Art",cat:"Museum",note:"Free. Harbor views in Flamengo Park. Open Wed–Sun.",lat:-22.9137527,lng:-43.1717993},
+  {name:"Cirandaia",cat:"Coffee",note:"4.9★ and a short walk from ibis. Flat white + cheese melt. |Closed Sun|",lat:-22.9554005,lng:-43.1959099},
+  {name:"Aussie Coffee",cat:"Coffee",note:"Third-wave coffee + breakfast, near the Ipanema bookstores.",lat:-22.9842948,lng:-43.1979751},
+  {name:"Mato Café",cat:"Coffee",note:"Tiny 4.9★ spot inside a gallery. V60 pour-overs. |Closed Mon & Sun|",lat:-22.9872443,lng:-43.191019},
+  {name:"Rio Coffee House",cat:"Coffee",note:"Family roaster near the Corcovado train — they often offer tastings.",lat:-22.9406829,lng:-43.1978649},
+  {name:"DarkCoffee",cat:"Coffee",note:"Reliable museum-day caffeine in Centro.",lat:-22.898104,lng:-43.1807199},
+  {name:"Coffee Five",cat:"Coffee",note:"Standout espresso in Centro. |Closed Sat & Sun|",lat:-22.9025663,lng:-43.1767791},
+  {name:"Livraria da Travessa",cat:"Bookstore",note:"Beautiful bookstore + full café inside; jazz, sit anywhere. Open to 10pm daily.",lat:-22.9836807,lng:-43.2120476},
+  {name:"Argumento",cat:"Bookstore",note:"Cozy Leblon shop with Café Severino in back. Great reading spot.",lat:-22.9829663,lng:-43.2263189},
+  {name:"Livraria Leonardo da Vinci",cat:"Bookstore",note:"Beloved independent, strong in history. Small café. |Closed Sun|",lat:-22.9074589,lng:-43.1764653},
+  {name:"Trilha do Morro da Urca",cat:"Nature",note:"|Free| hike up Sugarloaf's first peak (~30 min). Go for sunset; wear real shoes.",lat:-22.9524706,lng:-43.1607527},
+  {name:"Parque da Catacumba → Urubu Lookout",cat:"Nature",note:"Easy 20-min hike to a Christ + Lagoa view. |Free| · |Closed Mon|",lat:-22.9704936,lng:-43.2044049},
+  {name:"Parque Dois Irmãos",cat:"Nature",note:"|Free| park, four lookouts over Ipanema. |Closed Mon|",lat:-22.9892907,lng:-43.2287659},
+  {name:"Tijuca National Park",cat:"Nature",note:"World's largest urban rainforest; Vista Chinesa. Easier with a tour/taxi.",lat:-22.9560998,lng:-43.2799308},
+  {name:"Pedra Bonita hike",cat:"Nature",note:"Moderate hike, panoramic views + wildlife. Open 8am–3pm.",lat:-22.9853581,lng:-43.2789974},
+  {name:"Tempo Bistrô",cat:"Food",note:"4.9★ bistro, walkable from ibis. Book ahead — it's small. Try the ceviche.",lat:-22.9541818,lng:-43.1865773},
+  {name:"Joaquina",cat:"Food",note:"Brazilian food, terrace view of Christ. Vegan/GF labeled.",lat:-22.9553932,lng:-43.1965953},
+  {name:"Marchezinho",cat:"Food",note:"Beef tartare, fresh ingredients, terrace people-watching.",lat:-22.9508333,lng:-43.1833333},
+  {name:"Spesso",cat:"Food",note:"8th-floor Sugarloaf views in Botafogo. Pasta & brunch.",lat:-22.947461,lng:-43.1834672},
+  {name:"Bossa Spa by Granado",cat:"Spa",note:"Closest spa to ibis. Book via WhatsApp. Open daily incl. Sun.",lat:-22.9427861,lng:-43.1815457},
+  {name:"Spa Holístico Alex Lisboa",cat:"Spa",note:"4.9★ massage + hot bath + sauna, Copacabana. |Closed Sun|",lat:-22.9761197,lng:-43.1926603},
+  {name:"Oliva Spa – Head Spa",cat:"Spa",note:"Scalp/hair-spa combos in Ipanema. |Closed Sun|",lat:-22.9843161,lng:-43.1978035},
+  {name:"Marina da Glória – Festival de Inverno",cat:"Event",note:"Winter cultural festival, Jul–Aug, between your hotels. Check the lineup.",lat:-22.9189,lng:-43.1697},
+];
+
+const DAYS = [
+  {dow:"Mon",num:20,hotel:"ibis Botafogo",title:"Arrival — ease in by the bay",tags:[["Coffee","cof"],["Nature","nat"]],
+   stops:[
+     {when:"Morning",name:"Cirandaia",desc:"Breakfast & flat white, a short walk from the hotel."},
+     {when:"Afternoon",name:"Bossa Spa by Granado",desc:"Optional first-day massage near ibis — or stroll Botafogo Bay for Sugarloaf views."},
+     {when:"Sunset",name:"Trilha do Morro da Urca",desc:"Free hike up Sugarloaf's first peak. Wear real shoes; ~15 min by Uber."},
+     {when:"Dinner",name:"Tempo Bistrô",desc:"One of Rio's best bistros, walkable. Book ahead."},
+   ], cost:"coffee ~R$35 · hike free · dinner ~R$120–160 · spa optional"},
+  {conf:true,dow:"Tue–Fri",num:"21",span:"–24",hotel:"Sheraton Grand",title:"Conference days",tags:[["Busy","rst"]],
+   stops:[
+     {when:"Early",name:"Beach or terrace coffee",desc:"The Sheraton sits below Vidigal — a sunrise reset before sessions."},
+     {when:"Evening",name:"Spa Holístico Alex Lisboa",desc:"Open late (to 11pm), hot bath + sauna. Ideal after a conference day. Closed Sun."},
+     {when:"Dinner",name:"LF Café & Bistrô",desc:"Cozy, well-priced, open late in Copacabana."},
+   ], cost:"flex around the schedule — keep it light"},
+  {dow:"Sat",num:25,hotel:"Sheraton Grand",title:"Museums + Ipanema",tags:[["Museums","mus"],["Coffee","cof"]],
+   stops:[
+     {when:"Morning",name:"Museu do Amanhã",desc:"Start at Praça Mauá (VLT or Uber), then walk next door to MAR."},
+     {when:"Midday",name:"DarkCoffee",desc:"Coffee break in Centro. (Coffee Five is closed Saturdays.)"},
+     {when:"Afternoon",name:"Livraria da Travessa",desc:"Lunch & browsing in Ipanema — bookstore with a full café."},
+     {when:"Dinner",name:"Argumento",desc:"Or stay in Ipanema/Leblon. Café Severino is open to 10pm."},
+   ], cost:"museums ~R$30–45 · coffee ~R$30 · meals ~R$150–220"},
+  {dow:"Sun",num:26,hotel:"Sheraton Grand",title:"Lookouts & the Lagoa",tags:[["Nature","nat"]],
+   stops:[
+     {when:"Morning",name:"Parque da Catacumba → Urubu Lookout",desc:"Easy 20-min climb to a Christ + Lagoa view. Bring water & repellent."},
+     {when:"Midday",name:"Lagoa Rodrigo de Freitas",desc:"Circle the lake or grab a kiosk lunch by the water."},
+     {when:"Afternoon",name:"Parque Dois Irmãos",desc:"Four lookouts over Ipanema. (Sunday spa? Bossa Spa is open; others closed.)"},
+     {when:"Dinner",name:"Joaquina",desc:"Last Sheraton night — terrace view of Christ."},
+   ], cost:"hikes free · lunch ~R$50–80 · dinner ~R$90–130"},
+  {dow:"Mon",num:27,hotel:"→ ibis Botafogo",title:"Hotel change + Centro",tags:[["Coffee","cof"],["Museums","mus"]],
+   stops:[
+     {when:"Morning",name:"Cirandaia",desc:"Check into ibis, then coffee — or head straight to Centro."},
+     {when:"Midday",name:"CCBB",desc:"Free, historic, open Mondays (closed Tue) — so today's the day."},
+     {when:"Afternoon",name:"Livraria Leonardo da Vinci",desc:"Independent bookshop with a little café. Coffee Five nearby."},
+     {when:"Dinner",name:"Marchezinho",desc:"Beef tartare & terrace people-watching in Botafogo."},
+   ], cost:"coffee ~R$35 · CCBB free · dinner ~R$90–130"},
+  {dow:"Tue",num:28,hotel:"ibis Botafogo",title:"Free-museum day",tags:[["Museums","mus"]],
+   stops:[
+     {when:"Morning",name:"Museu do Amanhã",desc:"Free entry Tuesdays (with MAR). Already done? Swap in MAM in Flamengo Park."},
+     {when:"Coffee",name:"Coffee Five",desc:"Excellent espresso in Centro, open weekdays."},
+     {when:"Afternoon",name:"Marina da Glória – Festival de Inverno",desc:"If the day's lineup appeals — the marquee winter event, between your areas."},
+     {when:"Dinner",name:"Spesso",desc:"8th-floor Sugarloaf views — or Tempo Bistrô again."},
+   ], cost:"museums free (Tue) · coffee ~R$30 · dinner ~R$90–140"},
+  {dow:"Wed",num:29,hotel:"ibis Botafogo",title:"Into the rainforest",tags:[["Nature","nat"]],
+   stops:[
+     {when:"Full day",name:"Tijuca National Park",desc:"Urban rainforest + Vista Chinesa. Half-day tour or taxi up; arrange your return."},
+     {when:"Or",name:"Pedra Bonita hike",desc:"Moderate half-day hike (8am–3pm), panoramic views, fewer crowds."},
+     {when:"Reward",name:"Rio Coffee House",desc:"If near Cosme Velho/Corcovado — a roaster that offers tastings."},
+     {when:"Dinner",name:"Joaquina",desc:"Relaxed, vegan/GF friendly, Christ view."},
+   ], cost:"park free/low · tour ~R$150–250 · dinner ~R$90–130"},
+  {dow:"Thu",num:30,hotel:"ibis Botafogo",title:"Last day / departure",tags:[["Coffee","cof"]],
+   stops:[
+     {when:"Morning",name:"Cirandaia",desc:"Final coffee — or a Sugarloaf-view breakfast at Spesso."},
+     {when:"If time",name:"Trilha do Morro da Urca",desc:"A last easy walk, or a farewell massage at Bossa Spa."},
+     {when:"Souvenirs",name:"Rio Coffee House",desc:"Grab beans, or a book from any of the Livrarias."},
+   ], cost:"coffee ~R$35 · optional spa ~R$180+"},
+];
+
+/* ---------- Helpers ---------- */
+const mapUrl = p => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name+", Rio de Janeiro")}&query_place_id=`;
+const gmaps = p => `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}`;
+const fmtNote = s => s
+  .replace(/\|Closed([^|]*)\|/g,'<span class="cl">Closed$1</span>')
+  .replace(/\|Free([^|]*)\|/g,'<span class="op">Free$1</span>');
+
+/* ---------- Render days ---------- */
+const daysEl = document.getElementById('days');
+DAYS.forEach((d,i)=>{
+  const el = document.createElement('article');
+  el.className = 'day'+(d.conf?' conf':'')+(i===0?' open':'');
+  const tags = d.tags.map(t=>`<span class="tag ${t[1]}">${t[0]}</span>`).join('');
+  const stops = d.stops.map(s=>{
+    const place = PLACES.find(p=>s.name.startsWith(p.name.split(' – ')[0].split(' →')[0]) || p.name.startsWith(s.name));
+    const nameHtml = place ? `<a href="${gmaps(place)}" target="_blank" rel="noopener">${s.name}</a>` : s.name;
+    return `<li class="stop"><div class="stop-when">${s.when}</div><div class="stop-main"><div class="stop-name">${nameHtml}</div><div class="stop-desc">${s.desc}</div></div></li>`;
+  }).join('');
+  el.innerHTML = `
+    <div class="day-top" role="button" tabindex="0" aria-expanded="${i===0}">
+      <div class="day-date"><div class="dow">${d.dow}</div><div class="num">${d.num}${d.span?`<span style="font-size:16px">${d.span}</span>`:''}</div></div>
+      <div class="day-spine">
+        <div class="day-title">${d.title}</div>
+        <div class="day-hotel"><span class="pin"></span>${d.hotel}</div>
+      </div>
+      <div class="day-tags">${tags}</div>
+      <div class="chev">▸</div>
+    </div>
+    <div class="day-body"><div class="day-inner">
+      <ul class="stops">${stops}</ul>
+      <div class="day-cost"><b>Est.</b> ${d.cost}</div>
+    </div></div>`;
+  const top = el.querySelector('.day-top');
+  const toggle = ()=>{ el.classList.toggle('open'); top.setAttribute('aria-expanded', el.classList.contains('open')); };
+  top.addEventListener('click',toggle);
+  top.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});
+  daysEl.appendChild(el);
+});
+
+/* ---------- Render filters + grid ---------- */
+const cats = ['All',...[...new Set(PLACES.map(p=>p.cat))]];
+const filtersEl = document.getElementById('filters');
+const gridEl = document.getElementById('grid');
+let active = 'All';
+
+function renderGrid(){
+  gridEl.innerHTML = PLACES.filter(p=>active==='All'||p.cat===active).map(p=>`
+    <div class="card">
+      <div class="card-cat cat-${p.cat}">${p.cat}</div>
+      <div class="card-name">${p.name}</div>
+      <div class="card-note">${fmtNote(p.note)}</div>
+      <a class="card-go" href="${gmaps(p)}" target="_blank" rel="noopener">Open in Maps →</a>
+    </div>`).join('');
+}
+cats.forEach(c=>{
+  const b = document.createElement('button');
+  b.className='filt'+(c==='All'?' on':''); b.textContent=c;
+  b.addEventListener('click',()=>{ active=c; document.querySelectorAll('.filt').forEach(x=>x.classList.remove('on')); b.classList.add('on'); renderGrid(); });
+  filtersEl.appendChild(b);
+});
+renderGrid();
+
+/* ---------- Full map link (multi-point via directions to key hubs) ---------- */
+document.getElementById('mapAllBtn').href =
+  'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('Museu do Amanhã, Rio de Janeiro');
+
+/* ---------- Share ---------- */
+const toast = document.getElementById('toast');
+function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),2200); }
+document.getElementById('shareBtn').addEventListener('click',async()=>{
+  const url = location.href;
+  try{
+    if(navigator.share){ await navigator.share({title:'Rio · Jul 20–30 2026',text:'Our Rio itinerary',url}); }
+    else { await navigator.clipboard.writeText(url); showToast('Link copied — send it to the crew'); }
+  }catch(e){ try{ await navigator.clipboard.writeText(url); showToast('Link copied'); }catch(_){ showToast('Copy the URL from your browser bar'); } }
+});
+</script>
+</body>
+</html>
